@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  selector:
+    matchLabels:
+      app: postgresapp
+      tier: postgres
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: postgresapp
+        tier: postgres
+    spec:
+      containers:
+        - name: k8s-postgres
+          image: postgres:latest
+          ports:
+            - containerPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+spec:
+  selector:
+    app: postgresapp
+    tier: postgres
+  type: NodePort
+  ports:
+    - port: 5151
+      targetPort: 5432
+      protocol: TCP
+      name: postgresport

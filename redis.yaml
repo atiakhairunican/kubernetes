@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  selector:
+    matchLabels:
+      app: redisapp
+      tier: redis
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: redisapp
+        tier: redis
+    spec:
+      containers:
+        - name: k8s-redis
+          image: redis:latest
+          ports:
+            - containerPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+spec:
+  selector:
+    app: redisapp
+    tier: redis
+  type: NodePort
+  ports:
+    - port: 5151
+      targetPort: 5432
+      protocol: TCP
+      name: redisport
