@@ -1,4 +1,48 @@
-apiVersion: apps/v1
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  labels:
+    app: postgres
+data:
+  POSTGRES_DB: sequelize
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: A020197kc
+
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: postgres-pv-volume
+  labels:
+    type: local
+    app: postgres
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/data"
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: postgres-pv-claim
+  labels:
+    app: postgres
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: postgres
@@ -6,19 +50,28 @@ spec:
   selector:
     matchLabels:
       app: postgresapp
-      tier: postgres
   replicas: 1
   template:
     metadata:
       labels:
         app: postgresapp
-        tier: postgres
     spec:
       containers:
         - name: k8s-postgres
           image: postgres:latest
           ports:
             - containerPort: 5432
+          envFrom:
+            - configMapRef:
+              name: postgres-config
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgresdb
+      volumes:
+        - name: postgresdb
+          persistentVolumeClaim:
+            claimName: postgres-pv-claim
+
 ---
 apiVersion: v1
 kind: Service
@@ -27,7 +80,6 @@ metadata:
 spec:
   selector:
     app: postgresapp
-    tier: postgres
   type: NodePort
   ports:
     - port: 5151
