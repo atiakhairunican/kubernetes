@@ -1,7 +1,14 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: frontendspace
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
+  namespace: frontendspace
 spec:
   selector:
     matchLabels:
@@ -19,6 +26,24 @@ spec:
           image: atiakhairunican/jenkinsfront:main
           ports:
             - containerPort: 8080
+            args:
+              - /bin/bash
+              - -c
+              - touch /tmp/healthy
+            livenessProbe:
+              exec:
+                command:
+                  - cat
+                  - /tmp/healthy
+              initialDelaySeconds: 5
+              periodSeconds: 3
+            readinessProbe:
+              exec:
+                command:
+                  - cat
+                  - /tmp/healthy
+              initialDelaySeconds: 5
+              periodSeconds: 3
 ---
 apiVersion: v1
 kind: Service
