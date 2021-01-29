@@ -5,13 +5,13 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: vuefront
+      app: frontendapp
       tier: frontend
   replicas: 1
   template:
     metadata:
       labels:
-        app: vuefront
+        app: frontendapp
         tier: frontend
     spec:
       containers:
@@ -26,11 +26,12 @@ metadata:
   name: frontend
 spec:
   selector:
-    app: vuefront
+    app: frontendapp
     tier: frontend
   type: NodePort
   ports:
     - port: 8080
       targetPort: 80
+      nodePort: 31285
       protocol: TCP
       name: frontendport
