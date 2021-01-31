@@ -6,7 +6,7 @@ metadata:
 ---
 apiVersion: v1
 data:
-  VUE_APP_URL: "http://54.89.19.210/api/"
+  VUE_APP_URL: "http://35.175.226.22:31284/api/"
   SERVICEPORT: "8080"
   MODE: "Dev"
 
