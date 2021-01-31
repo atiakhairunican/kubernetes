@@ -4,6 +4,18 @@
 #   name: frontendspace
 
 ---
+apiVersion: v1
+data:
+  VUE_APP_URL: "http://54.89.19.210/api/"
+  SERVICEPORT: "8080"
+  MODE: "Dev"
+
+kind: ConfigMap
+metadata:
+  name: frontendenv
+  # namespace: example
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -26,6 +38,9 @@ spec:
           image: atiakhairunican/jenkinsfront:main
           ports:
             - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: frontendenv
           # args:
           #   - /bin/bash
           #   - -c
