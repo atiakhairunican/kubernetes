@@ -30,21 +30,21 @@ spec:
           #   - /bin/bash
           #   - -c
           #   - touch /tmp/healthy
-          livenessProbe:
-            exec:
-              command:
-                - /bin/sh
-                - -c
-                - "/usr/bin/my-application-jobs --alive"
-            initialDelaySeconds: 10
-            periodSeconds: 5
-          # readinessProbe:
-          #   httpGet:
-          #     scheme: HTTP
-          #     path: /
-          #     port: 8080
+          # livenessProbe:
+          #   exec:
+          #     command:
+          #       - /bin/sh
+          #       - -c
+          #       - "/usr/bin/my-application-jobs --alive"
           #   initialDelaySeconds: 10
           #   periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /product
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
 
 ---
 apiVersion: v1
