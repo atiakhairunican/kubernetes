@@ -54,7 +54,7 @@ spec:
           readinessProbe:
             httpGet:
               scheme: HTTP
-              path: /api/product
+              path: /api/history
               port: 9000
             initialDelaySeconds: 10
             periodSeconds: 5
