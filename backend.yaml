@@ -1,8 +1,7 @@
-# ---
-# apiVersion: v1
-# kind: Namespace
-# metadata:
-#   name: example
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: backendspace
 
 ---
 apiVersion: v1
@@ -24,13 +23,14 @@ data:
 kind: ConfigMap
 metadata:
   name: backendenv
-  # namespace: example
+  namespace: backendspace
 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend
+  namespace: backendspace
 spec:
   selector:
     matchLabels:
@@ -64,6 +64,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: backend
+  namespace: backendspace
 spec:
   selector:
     app: backend
