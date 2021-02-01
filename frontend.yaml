@@ -35,24 +35,12 @@ spec:
     spec:
       containers:
         - name: k8s-frontend
-          image: atiakhairunican/jenkinsfront:main
+          image: atiakhairunican/k8sfront:main
           ports:
             - containerPort: 8080
           envFrom:
             - configMapRef:
                 name: frontendenv
-          # args:
-          #   - /bin/bash
-          #   - -c
-          #   - touch /tmp/healthy
-          # livenessProbe:
-          #   exec:
-          #     command:
-          #       - /bin/sh
-          #       - -c
-          #       - "/usr/bin/my-application-jobs --alive"
-          #   initialDelaySeconds: 10
-          #   periodSeconds: 5
           readinessProbe:
             httpGet:
               scheme: HTTP
