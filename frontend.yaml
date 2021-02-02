@@ -35,7 +35,7 @@ spec:
     spec:
       containers:
         - name: k8s-frontend
-          image: atiakhairunican/k8sfront:main
+          image: atiakhairunican/jenkinsfront:main
           ports:
             - containerPort: 8080
           envFrom:
