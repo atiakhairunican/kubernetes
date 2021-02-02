@@ -51,13 +51,6 @@ spec:
           envFrom:
             - configMapRef:
                 name: backendenv
-          # readinessProbe:
-          #   httpGet:
-          #     scheme: HTTP
-          #     path: /api/history
-          #     port: 9000
-          #   initialDelaySeconds: 10
-          #   periodSeconds: 5
 
 ---
 apiVersion: v1
